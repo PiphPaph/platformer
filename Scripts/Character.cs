@@ -13,6 +13,11 @@ public class Character : MonoBehaviour
     float speed = 7f;
     private float jumpForce = 300f;
     public Rigidbody2D rb;
+
+    public int maxHP = 100;
+    public int currentHP = 100;
+    private float attackAnimationTime = 0.5f;
+    private float enableBoxCollider2D = 0.4f;
    
 
     
@@ -43,6 +48,11 @@ public class Character : MonoBehaviour
         {
             Attack();
         }
+
+        if (Input.GetKeyDown(KeyCode.S))
+        {
+            DropDown();
+        }
     }
     void Spin()
     {
@@ -62,6 +72,18 @@ public class Character : MonoBehaviour
         }
     }
 
+    void DropDown()
+    {
+        GetComponent<Collider2D>().enabled = false;
+        StartCoroutine(enableBoxCollider());
+    }
+
+    IEnumerator enableBoxCollider()
+    {
+        yield return new WaitForSeconds(enableBoxCollider2D);
+        GetComponent<Collider2D>().enabled = true;
+    }
+    
     void Attack()
     {
         isAttacked = true;
@@ -71,20 +93,32 @@ public class Character : MonoBehaviour
 
     IEnumerator AttackTime()
     {
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(attackAnimationTime);
         isAttacked = false;
         animator.SetBool("IsAttacked", isAttacked);
     }
 
     void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.tag == "Platform")
+        if (collision.gameObject.tag == "Platform" || collision.gameObject.tag == "Sides")
         {
             isLanded = true;
             animator.SetBool("IsLanded", isLanded);
             isJumped = false;
             animator.SetBool("IsJumped", isJumped);
         }
+        if (collision.gameObject.tag == "FooterRespawn")
+        {
+            transform.position = new Vector2(-7, 0);
+        }
         
+    }
+
+    void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.tag == "Kitty")
+        {
+            transform.position = new Vector2(-7, 0);
+        }
     }
 }
