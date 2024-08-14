@@ -5,41 +5,56 @@ using UnityEngine;
 public class SpawnPlatformPerLvl : MonoBehaviour
 {
     public GameObject platformPrefab;
-    public int maxCountPlatformPrefab = 10;
-    public double timeSpawn;
-    private double timer;
-
-    private float minimX = -2f;
-    private float maximX = 4f;
+    public float minDistance = 1f;
+    public  int maxCountPlatformPrefab = 10;
+    public  float minimX = -5f;
+    public  float maximX = 7f;
+    public  float minimY = -1f;
+    public  float maximY = 5f;
+    private List<GameObject> platforms = new List<GameObject>();
 
     void Start()
     {
-        //timer = timeSpawn;
-        GenerateChunk(minimX, maximX);
+        GenerateChunk(minimX, maximX, minimY, maximY);
     }
-    void GenerateChunk(float minX, float maxX)
+    void GenerateChunk(float minX, float maxX, float minY, float maxY)
     {
-        //var posY = GameObject.FindGameObjectWithTag("tiger").transform.position;
-        Vector2 spawnPosition = new Vector2(0f, 0f);
-
         for (int i = 0; i < maxCountPlatformPrefab; i++)
         {
-            spawnPosition.x = Random.Range(minimX, maximX);
-            GameObject platform = Instantiate(platformPrefab, spawnPosition, Quaternion.identity) as GameObject;
-            
+            Vector2 spawnPosition;
+            bool validPosition;
+            do
+            {
+                spawnPosition = new Vector2(Random.Range(minimX, maximX), Random.Range(minimY, maximY));
+                validPosition = true;
+                foreach (var platform in platforms)
+                {
+                    if (Vector2.Distance(spawnPosition, platform.transform.position) < minDistance)
+                    {
+                        validPosition = false;
+                        break;
+                    }
+                }
+            } while (!validPosition);
+            GameObject newPlatform = Instantiate(platformPrefab, spawnPosition, Quaternion.identity) as GameObject;
+            platforms.Add(newPlatform);
         }
     }
-    // GameObject destroyPlatform = Instantiate(platformPrefab, spawnPosition, Quaternion.identity) as GameObject;
-    // Destroy(destroyPlatform, 7f);
+    void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.CompareTag("Player"))
+        {
+            foreach (var platform in platforms)
+            {
+                Destroy(platform);
+            }
+            platforms.Clear();
+            GenerateChunk(minimX, maximX, minimY, maximY);
+        }
+    }
 
     void Update()
     {
-        // timer -= Time.deltaTime;
-        // if (timer <= 0) 
-        // {
-        //     timer = timeSpawn;
-        //     GenerateChunk(minimX, maximX);
-        // }
-            
+        
     }
 }
