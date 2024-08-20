@@ -52,9 +52,4 @@ public class SpawnPlatformPerLvl : MonoBehaviour
             GenerateChunk(minimX, maximX, minimY, maximY);
         }
     }
-
-    void Update()
-    {
-        
-    }
 }
