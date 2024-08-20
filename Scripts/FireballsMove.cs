@@ -4,6 +4,7 @@ public class FireballsMove : MonoBehaviour
 {
     private Rigidbody2D rb;
     private float maxSpeed = 10f;
+    public Character playerCharacter;
     
     void Start()
     {
@@ -22,7 +23,7 @@ public class FireballsMove : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Player"))
         {
-            Character.currentHp -= 10;
+            playerCharacter.currentHp -= 10;
         }
     }
 }

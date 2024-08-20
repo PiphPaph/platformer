@@ -20,7 +20,7 @@ public class Character : MonoBehaviour
     private float attackAnimationTime = 0.5f;
     private float enableBoxCollider2D = 0.4f;
     private float damagedTime = 0.5f;
-    public static float currentHp;
+    public float currentHp;
     public float maxHp = 100f;
     public Image healthBar;
    
