@@ -7,7 +7,7 @@ using TMPro;
 public class GameOverScript : MonoBehaviour
 {
     public TextMeshProUGUI gameOverText;
-    public float spacingChangeSpeed = 9f;
+    public float spacingTextChangeSpeed = 9f;
     public Button restartGameButton;
     public Character playerCharacter;
     
@@ -29,6 +29,6 @@ public class GameOverScript : MonoBehaviour
         {
             GameOver();
         }
-        gameOverText.characterSpacing = Mathf.PingPong(Time.time * spacingChangeSpeed, 10f);
+        gameOverText.characterSpacing = Mathf.PingPong(Time.time * spacingTextChangeSpeed, 10f);
     }
 }

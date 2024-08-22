@@ -1936,7 +1936,6 @@ GameObject:
   - component: {fileID: 1019758303}
   - component: {fileID: 1019758305}
   - component: {fileID: 1019758304}
-  - component: {fileID: 1019758306}
   m_Layer: 5
   m_Name: LevelCounter
   m_TagString: Untagged
@@ -2005,20 +2004,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1019758302}
   m_CullTransparentMesh: 1
---- !u!114 &1019758306
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1019758302}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 38e5a2d7877da854c8b70a6c237ef2e2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  lvlCounter: 1
-  lvlCounterText: {fileID: 1019758304}
 --- !u!1 &1027361463
 GameObject:
   m_ObjectHideFlags: 0
@@ -2798,6 +2783,25 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!1 &1326658484 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6688561722768804673, guid: 03351d1f4798be44db034a76d6a2bbcf, type: 3}
+  m_PrefabInstance: {fileID: 1466052455}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1326658489
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1326658484}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 38e5a2d7877da854c8b70a6c237ef2e2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  lvlCounter: 1
+  lvlCounterText: {fileID: 1019758304}
 --- !u!1001 &1345451499
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3052,7 +3056,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 6688561722768804673, guid: 03351d1f4798be44db034a76d6a2bbcf, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1326658489}
   m_SourcePrefab: {fileID: 100100000, guid: 03351d1f4798be44db034a76d6a2bbcf, type: 3}
 --- !u!1 &1503286987
 GameObject:
@@ -3618,7 +3625,7 @@ GameObject:
   - component: {fileID: 1813207933}
   - component: {fileID: 1813207934}
   - component: {fileID: 1813207935}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Character
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -3852,7 +3859,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gameOverText: {fileID: 1736967678}
-  spacingChangeSpeed: 9
+  spacingTextChangeSpeed: 9
   restartGameButton: {fileID: 358242943}
   playerCharacter: {fileID: 1813207930}
 --- !u!60 &1813207935
@@ -3923,10 +3930,10 @@ PolygonCollider2D:
       - {x: -0.154459, y: -0.00627017}
       - {x: -0.13586454, y: -0.06820683}
       - {x: -0.10439825, y: -0.12074733}
-      - {x: -0.10221942, y: -0.25815272}
-      - {x: -0.101753235, y: -0.3399999}
-      - {x: -0.095, y: -0.34}
-      - {x: 0.105, y: -0.34}
+      - {x: -0.08258517, y: -0.26331973}
+      - {x: -0.083322525, y: -0.26348305}
+      - {x: -0.07256195, y: -0.33890328}
+      - {x: 0.07501171, y: -0.3347064}
       - {x: 0.10872793, y: -0.15214372}
       - {x: 0.13309008, y: -0.06363758}
       - {x: 0.1629828, y: 0.06}
