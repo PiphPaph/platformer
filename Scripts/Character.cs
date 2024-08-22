@@ -1,119 +1,126 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public class Character : MonoBehaviour
 {
     public Animator animator;
-    public GameObject Player;
+    [FormerlySerializedAs("Player")] public GameObject player;
     public bool isRightSide = true;
     public bool isLanded = false;
     public bool isJumped = false;
     public bool isAttacked = false;
     public bool isDead = false;
     public bool takeDamage;
-    float speed = 7f;
-    private float jumpForce = 300f;
+    private float _speed = 5f;
+    private const float JumpForce = 300f;
     public Rigidbody2D rb;
-    private float attackAnimationTime = 0.5f;
-    private float enableBoxCollider2D = 0.4f;
-    private float damagedTime = 0.5f;
+    private const float AttackAnimationTime = 0.5f;
+    private const float EnableBoxCollider2D = 0.4f;
+    private const float DamagedTime = 0.5f;
     public float currentHp;
     public float maxHp = 100f;
     public Image healthBar;
+    private Collider2D _getCollider;
    
 
     
-    void Start()
+    private void Start()
     { 
         rb = GetComponent<Rigidbody2D>();
         currentHp = maxHp;
+        _getCollider = GetComponent<Collider2D>();
     }
-    void Update()
+    private void Update()
     {
         healthBar.fillAmount = Mathf.Clamp(currentHp / maxHp, 0, 1);
-        float moveX = Input.GetAxis("Horizontal") * speed;
         
+        Move();
+        
+        Jump();
+        
+        Attack();
+
+        DropDown();
+        
+        CharacterDie();
+        
+    }
+
+    private void Move()
+    {
+        var moveX = Input.GetAxis("Horizontal") * _speed;
         rb.velocity = new Vector2(moveX, rb.velocity.y);
-        
         animator.SetFloat("Speed", Math.Abs(moveX));
-        
-        
         if ((moveX > 0f && !isRightSide) || (moveX < 0f && isRightSide)) //Если игрок начал двигаться в противоположную сторону
-        {
+        { 
             if (moveX != 0f) //Если он не стоит
             {
                 Spin();
             }
         }
-
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            Jump();
-        }
-
-        if (Input.GetKeyDown(KeyCode.Mouse0))
-        {
-            Attack();
-        }
-
-        if (Input.GetKeyDown(KeyCode.S))
-        {
-            DropDown();
-        }
-
-        if (currentHp == 0)
-        {
-            CharacterDie();
-        }
     }
-    void Spin()
+    
+    private void Spin()
     {
         isRightSide = !isRightSide;
         transform.localScale = new Vector3(transform.localScale.x * -1, 1f, 1f);
     }
 
-    void Jump()
+    private void Jump()
     {
-        if (isLanded)
+        if (Input.GetKeyDown(KeyCode.Space))
         {
-            rb.AddForce(Vector2.up * jumpForce);
-            isLanded = false;
-            animator.SetBool("IsLanded", isLanded);
-            isJumped = true;
-            animator.SetBool("IsJumped", isJumped);
+            if (isLanded)
+            {
+                rb.AddForce(Vector2.up * JumpForce);
+                isLanded = false;
+                animator.SetBool("IsLanded", isLanded);
+                isJumped = true;
+                animator.SetBool("IsJumped", isJumped);
+            }
+        } 
+    }
+
+    private void DropDown()
+    {
+        if (Input.GetKeyDown(KeyCode.S) && currentHp <= 0)
+        {
+            rb.constraints = RigidbodyConstraints2D.FreezePositionY;
+        }
+        else if (Input.GetKeyDown(KeyCode.S))
+        {
+            _getCollider.enabled = false;
+            StartCoroutine(EnableBoxCollider());
         }
     }
 
-    void DropDown()
+    private IEnumerator EnableBoxCollider()
     {
-        GetComponent<Collider2D>().enabled = false;
-        StartCoroutine(enableBoxCollider());
-    }
-
-    IEnumerator enableBoxCollider()
-    {
-        yield return new WaitForSeconds(enableBoxCollider2D);
-        GetComponent<Collider2D>().enabled = true;
+        yield return new WaitForSeconds(EnableBoxCollider2D);
+        _getCollider.enabled = true;
     }
     
-    void Attack()
+    private void Attack()
     {
-        isAttacked = true;
-        animator.SetBool("IsAttacked", isAttacked);
-        StartCoroutine(AttackTime());
+        if (Input.GetKeyDown(KeyCode.Mouse0))
+        {
+            isAttacked = true;
+            animator.SetBool("IsAttacked", isAttacked);
+            StartCoroutine(AttackTime());
+        }
     }
 
-    IEnumerator AttackTime()
+    private IEnumerator AttackTime()
     {
-        yield return new WaitForSeconds(attackAnimationTime);
+        yield return new WaitForSeconds(AttackAnimationTime);
         isAttacked = false;
         animator.SetBool("IsAttacked", isAttacked);
     }
 
-    void OnCollisionEnter2D(Collision2D collision)
+    private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.CompareTag("Platform") || collision.gameObject.CompareTag("Sides"))
         {
@@ -133,7 +140,7 @@ public class Character : MonoBehaviour
         
     }
 
-    void OnTriggerEnter2D(Collider2D collision)
+    private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.gameObject.CompareTag("Kitty"))
         {
@@ -147,18 +154,26 @@ public class Character : MonoBehaviour
             StartCoroutine(Damaged());
         }
     }
-    IEnumerator Damaged()
+    private IEnumerator Damaged()
     {
-        yield return new WaitForSeconds(damagedTime);
+        yield return new WaitForSeconds(DamagedTime);
         takeDamage = false;
         animator.SetBool("TakeDamage", takeDamage);
     }
 
-    void CharacterDie()
+    private void CharacterDie()
     {
-        isDead = true;
-        animator.SetBool("IsDead", isDead);
-        rb.constraints = RigidbodyConstraints2D.FreezePositionX;
-        speed = 0;
+        if (currentHp == 0)
+        {
+            isDead = true;
+            animator.SetBool("IsDead", isDead);
+            rb.constraints = RigidbodyConstraints2D.FreezePositionX;
+            if (isLanded)
+            {
+                isLanded = false;
+                rb.constraints = RigidbodyConstraints2D.FreezePositionY;
+            }
+            _speed = 0;
+        }
     }
 }

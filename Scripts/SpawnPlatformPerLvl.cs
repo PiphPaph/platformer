@@ -5,12 +5,12 @@ using UnityEngine;
 public class SpawnPlatformPerLvl : MonoBehaviour
 {
     public GameObject platformPrefab;
-    public float minDistance = 1f;
-    public  int maxCountPlatformPrefab = 10;
-    public  float minimX = -5f;
-    public  float maximX = 7f;
-    public  float minimY = -1f;
-    public  float maximY = 5f;
+    public float minDistance = 10f;
+    public int maxCountPlatformPrefab = 10;
+    public float minimX = -5f;
+    public float maximX = 7f;
+    public float minimY = -1f;
+    public float maximY = 5f;
     private List<GameObject> platforms = new List<GameObject>();
 
     void Start()
