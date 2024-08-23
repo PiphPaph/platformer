@@ -86,11 +86,11 @@ public class Character : MonoBehaviour
 
     private void DropDown()
     {
-        if (Input.GetKeyDown(KeyCode.S) && currentHp <= 0)
+        if (currentHp == 0)
         {
-            rb.constraints = RigidbodyConstraints2D.FreezePositionY;
+            return;
         }
-        else if (Input.GetKeyDown(KeyCode.S))
+        if (Input.GetKeyDown(KeyCode.S))
         {
             _getCollider.enabled = false;
             StartCoroutine(EnableBoxCollider());
