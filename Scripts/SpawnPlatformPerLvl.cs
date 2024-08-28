@@ -11,13 +11,15 @@ public class SpawnPlatformPerLvl : MonoBehaviour
     public float maximX = 7f;
     public float minimY = -1f;
     public float maximY = 5f;
+    private SpawnFireballs _spawnFireballs;
     private List<GameObject> platforms = new List<GameObject>();
 
     void Start()
     {
-        GenerateChunk(minimX, maximX, minimY, maximY);
+        SpawnPlatforms(minimX, maximX, minimY, maximY);
+        _spawnFireballs = FindObjectOfType<SpawnFireballs>();
     }
-    void GenerateChunk(float minX, float maxX, float minY, float maxY)
+    void SpawnPlatforms(float minX, float maxX, float minY, float maxY)
     {
         for (int i = 0; i < maxCountPlatformPrefab; i++)
         {
@@ -49,7 +51,8 @@ public class SpawnPlatformPerLvl : MonoBehaviour
                 Destroy(platform);
             }
             platforms.Clear();
-            GenerateChunk(minimX, maximX, minimY, maximY);
+            SpawnPlatforms(minimX, maximX, minimY, maximY);
+            Destroy(_spawnFireballs.destroyFireball);
         }
     }
 }

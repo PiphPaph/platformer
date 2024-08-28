@@ -2,24 +2,24 @@ using UnityEngine;
 
 public class FireballsMove : MonoBehaviour
 {
-    private Rigidbody2D rb;
-    private float maxSpeed = 10f;
+    private Rigidbody2D _rb;
+    private float _maxSpeed = 10f;
     public Character playerCharacter;
     
-    void Start()
+    private void Start()
     {
-        rb = GetComponent<Rigidbody2D>();
+        _rb = GetComponent<Rigidbody2D>();
     }
 
-    void Update()
+    private void Update()
     {
-        rb.AddForce(new Vector2(-1, 0) * Time.deltaTime, ForceMode2D.Impulse);
-        if(rb.velocity.magnitude > maxSpeed) 
+        _rb.AddForce(new Vector2(-1, 0) * Time.deltaTime, ForceMode2D.Impulse);
+        if(_rb.velocity.magnitude > _maxSpeed) 
         {
-            rb.velocity = rb.velocity.normalized * maxSpeed;
+            _rb.velocity = _rb.velocity.normalized * _maxSpeed;
         }
     }
-    void OnTriggerEnter2D(Collider2D collision)
+    private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.gameObject.CompareTag("Player"))
         {

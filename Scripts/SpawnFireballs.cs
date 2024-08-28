@@ -1,48 +1,53 @@
 using UnityEngine;
 
-public class spawnNormalPlatform : MonoBehaviour
+public class SpawnFireballs : MonoBehaviour
 {
-    public GameObject RedFireball;
+    public GameObject redFireball;
     public int maxFireballCount = 1;
     public double timeSpawn;
-    private double timer;
+    private double _timer;
     public  float minY = -4f;
     public  float maxY = 4f;
     public float minDistance = 1f;
+    public Vector2 spawnPosition;
+    private float _spawnPositionX = 18f;
+    public int destroyFireballTime = 7;
+    private FireballWarning _fireballSpawned;
+    public GameObject destroyFireball;
 
-    void Start()
+    private void Start()
     {
-        timer = timeSpawn;
-        GenerateChunk(minY, maxY);
+        _timer = timeSpawn;
+        _fireballSpawned = GetComponent<FireballWarning>();
     }
-    void GenerateChunk(float minY, float maxY)
+    private void FireballSpawn(float minY, float maxY)
     {
         
-        for (int i = 0; i < maxFireballCount; i++)
+        for (var i = 0; i < maxFireballCount; i++)
         {
-            Vector2 spawnPosition;
             bool validPosition;
             do
             {
-                spawnPosition = new Vector2(12f, Random.Range(minY, maxY));
+                spawnPosition = new Vector2(_spawnPositionX, Random.Range(minY, maxY));
                 validPosition = true;
-                    if (Vector2.Distance(spawnPosition, RedFireball.transform.position) < minDistance)
+                    if (Vector2.Distance(spawnPosition, redFireball.transform.position) < minDistance)
                     {
                         validPosition = false;
                         break;
                     }
             } while (!validPosition);
-            GameObject destroyFireball = Instantiate(RedFireball, spawnPosition, Quaternion.identity);
-            Destroy(destroyFireball, 7f);
+            destroyFireball = Instantiate(redFireball, spawnPosition, Quaternion.identity);
+            Destroy(destroyFireball, destroyFireballTime);
         }
+        _fireballSpawned.SpawnWarning();
     }
-    void Update()
+    private void Update()
     {
-        timer -= Time.deltaTime;
-        if (timer <= 0)
+        _timer -= Time.deltaTime;
+        if (_timer <= 0)
         {
-            timer = timeSpawn;
-            GenerateChunk(minY, maxY);
+            _timer = timeSpawn;
+            FireballSpawn(minY, maxY);
         }
     }
 }
