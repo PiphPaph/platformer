@@ -3,7 +3,7 @@ using UnityEngine;
 public class FireballsMove : MonoBehaviour
 {
     private Rigidbody2D _rb;
-    private float _maxSpeed = 10f;
+    private float _maxSpeed = 8f;
     public Character playerCharacter;
     
     private void Start()

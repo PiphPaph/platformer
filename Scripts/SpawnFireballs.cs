@@ -10,7 +10,7 @@ public class SpawnFireballs : MonoBehaviour
     public  float maxY = 4f;
     public float minDistance = 1f;
     public Vector2 spawnPosition;
-    private float _spawnPositionX = 18f;
+    private float _spawnPositionX = 20f;
     public int destroyFireballTime = 7;
     private FireballWarning _fireballSpawned;
     public GameObject destroyFireball;
